@@ -2,141 +2,267 @@
 <html>
 <head>
   <title>Campus Navigation System</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
 
-  
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 20px;
-    }
-    input {
-      padding: 6px;
-      width: 250px;
-    }
-    button {
-      padding: 6px 10px;
-    }
-    li {
-      cursor: pointer;
-      margin: 5px 0;
-    }
-    li:hover {
-      color: blue;
-    }
-    #output {
-      margin-top: 10px;
-      font-weight: bold;
-    }
-    #qrcode {
-      margin-top: 20px;
-    }
-  </style>
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Poppins',sans-serif;
+}
+
+body{
+  min-height:100vh;
+  background:linear-gradient(-45deg,#667eea,#764ba2,#6a11cb,#2575fc);
+  background-size:400% 400%;
+  animation:gradientBG 10s ease infinite;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  transition:1s;
+}
+
+/* Clear Background After Login */
+body.main-bg{
+  background:url("https://content.jdmagicbox.com/v2/comp/bangalore/51/080p4304951/catalogue/impact-college-of-engineering-and-applied-sciences-kodigehalli-bangalore-institutes-1300ag5.jpg");
+  background-size:cover;
+  background-position:center;
+  background-attachment:fixed;
+  animation:none;
+}
+
+@keyframes gradientBG{
+  0%{background-position:0% 50%;}
+  50%{background-position:100% 50%;}
+  100%{background-position:0% 50%;}
+}
+
+/* Container without blur */
+.container{
+  width:95%;
+  max-width:1100px;
+  background:rgba(255,255,255,0.95);
+  padding:30px;
+  border-radius:20px;
+  box-shadow:0 20px 50px rgba(0,0,0,0.5);
+  color:#333;
+  max-height:95vh;
+  overflow:auto;
+  animation:fadeIn 1s ease;
+}
+
+@keyframes fadeIn{
+  from{opacity:0; transform:translateY(20px);}
+  to{opacity:1; transform:translateY(0);}
+}
+
+h2,h3{
+  text-align:center;
+  margin-bottom:15px;
+}
+
+input{
+  width:100%;
+  padding:12px;
+  border:1px solid #ccc;
+  border-radius:10px;
+  margin-bottom:10px;
+  font-size:16px;
+}
+
+button{
+  width:100%;
+  padding:12px;
+  border:none;
+  border-radius:10px;
+  background:#ffcc00;
+  font-weight:bold;
+  cursor:pointer;
+  transition:0.3s;
+}
+
+button:hover{
+  background:#ffaa00;
+  transform:scale(1.05);
+}
+
+#output{
+  margin-top:15px;
+  padding:12px;
+  background:#f4f4f4;
+  border-radius:10px;
+  min-height:40px;
+}
+
+ul{
+  list-style:none;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(170px,1fr));
+  gap:10px;
+  margin-top:10px;
+}
+
+li{
+  background:#e6e6e6;
+  padding:8px;
+  border-radius:10px;
+  text-align:center;
+  cursor:pointer;
+  transition:0.3s;
+  font-size:14px;
+}
+
+li:hover{
+  background:#ffcc00;
+  color:black;
+  transform:translateY(-5px) scale(1.05);
+}
+
+.hidden{
+  display:none;
+}
+
+.logout{
+  margin-top:15px;
+  background:#ff4d4d;
+  color:white;
+}
+
+.logout:hover{
+  background:#cc0000;
+}
+</style>
 </head>
 
 <body>
 
-<h2>Campus Navigation System</h2>
-<p>Enter Option</p>
+<div class="container" id="loginPage">
+  <h2>Campus Navigation Login</h2>
+  <input type="text" id="username" placeholder="Enter Username">
+  <input type="password" id="password" placeholder="Enter Password">
+  <button onclick="login()">Login</button>
+  <p id="loginMsg" style="margin-top:10px; color:red;"></p>
+</div>
 
-<input type="text" id="searchbox" placeholder="B1 or GF001 , FF001 , SF001 ,TF001">
-<button type="button" onclick="searchLocation()">Search</button>
+<div class="container hidden" id="mainPage">
+  <h2>Campus Navigation System</h2>
 
-<p id="output">Waiting for input...</p>
+  <input type="text" id="searchbox" placeholder="Enter Block or Room Code">
+  <button onclick="searchLocation()">Search</button>
 
-<hr>
+  <div id="output">Waiting for input...</div>
 
-<h3>Blocks</h3>
-<ul>
-  <li onclick="quickSelect('B1')">B1 – Robotics and Automation Block</li>
-  <li onclick="quickSelect('B2')">B2 – Admission Office Block</li>
-  <li onclick="quickSelect('B3')">B3 – Workshop Block</li>
-  <li onclick="quickSelect('B4')">B4 – 2 Wheel Parking Block</li>
-  <li onclick="quickSelect('B5')">B5 – Impact College Green Block</li>
-  <li onclick="quickSelect('B6')">B6 – Girls Hostel Block</li>
-  <li onclick="quickSelect('B7')">B7 – Hostel Canteen Block</li>
-  <li onclick="quickSelect('B8')">B8 – Boys Hostel Block</li>
-  <li onclick="quickSelect('B9')">B9 – Library Block</li>
-  <li onclick="quickSelect('B10')">B10 – ramanuja hall Block</li>
-  <li onclick="quickSelect('B11')">B11 – Visvesvaraya Hall Block</li>
-  <li onclick="quickSelect('B12')">B12 – Sports Block</li>
-  <li onclick="quickSelect('B13')">B13 – Back Gate </li>
+  <h3>Blocks</h3>
+  <ul>
+    <li onclick="quickSelect('B1')">B1 – Robotics and Automation Block</li>
+    <li onclick="quickSelect('B2')">B2 – Admission Office Block</li>
+    <li onclick="quickSelect('B3')">B3 – Workshop Block</li>
+    <li onclick="quickSelect('B4')">B4 – 2 Wheel Parking Block</li>
+    <li onclick="quickSelect('B5')">B5 – Impact College Green Block</li>
+    <li onclick="quickSelect('B6')">B6 – Girls Hostel Block</li>
+    <li onclick="quickSelect('B7')">B7 – Hostel Canteen Block</li>
+    <li onclick="quickSelect('B8')">B8 – Boys Hostel Block</li>
+    <li onclick="quickSelect('B9')">B9 – Library Block</li>
+    <li onclick="quickSelect('B10')">B10 – Ramanuja Hall Block</li>
+    <li onclick="quickSelect('B11')">B11 – Visvesvaraya Hall Block</li>
+    <li onclick="quickSelect('B12')">B12 – Sports Block</li>
+    <li onclick="quickSelect('B13')">B13 – Back Gate</li>
+  </ul>
 
-</ul>
+  <h3>Rooms</h3>
+  <ul>
+    <li onclick="quickSelect('GF001')">GF001 – AIML Class Room</li>
+    <li onclick="quickSelect('GF002')">GF002 – CSE Class Room</li>
+    <li onclick="quickSelect('GF003')">GF003 – CD, CY Class Room</li>
+    <li onclick="quickSelect('GF004')">GF004 – Robotics Class Room</li>
+    <li onclick="quickSelect('GF005')">GF005 – IDT Lab</li>
+    <li onclick="quickSelect('GF006')">GF006 – Seminar Hall</li>
+    <li onclick="quickSelect('FF001')">FF001 – Principal Office</li>
+    <li onclick="quickSelect('FF002')">FF002 – Account Department</li>
+    <li onclick="quickSelect('FF003')">FF003 – Civil Staff Room</li>
+    <li onclick="quickSelect('FF004')">FF004 – Mechanical Staff Room</li>
+    <li onclick="quickSelect('FF005')">FF005 – Mechanical Lab</li>
+    <li onclick="quickSelect('FF006')">FF006 – Civil Lab</li>
+    <li onclick="quickSelect('SF001')">SF001 – Computer Science Staff Room</li>
+    <li onclick="quickSelect('SF002')">SF002 – Computer Science Lab</li>
+    <li onclick="quickSelect('TF001')">TF001 – Physics Lab</li>
+  </ul>
 
-<h3>Rooms</h3>
-<ul>
-  <li onclick="quickSelect('GF001')">GF001 – AIML  class Room</li>
-  <li onclick="quickSelect('GF002')">GF002 – CSE Class Room</li>
-  <li onclick="quickSelect('GF003')">GF003 – CD , CY , Class Room</li>
-  <li onclick="quickSelect('GF004')">GF004 – Robotics Class Room </li>
-  <li onclick="quickSelect('GF005')">GF005 – IDT LAB</li>
-  <li onclick="quickSelect('GF006')">GF006 – Seminar Hall</li>
-  <li onclick="quickSelect('FF001')">FF001 – Principal Office</li>
-  <li onclick="quickSelect('FF002')">FF002 – Account deportment</li>
-  <li onclick="quickSelect('FF003')">FF003 – Cvil Staff Room</li>
-  <li onclick="quickSelect('FF004')">FF004 – Mechanical Staff Room</li>
-  <li onclick="quickSelect('FF005')">FF005 – Mechanical Lab</li>
-  <li onclick="quickSelect('FF006')">FF006 – Cvil Lab</li>
-  <li onclick="quickSelect('SF001')">SF001 – computer science Staff Room</li>
-  <li onclick="quickSelect('SF002')">SF002 – computer science Lab</li>
-  <li onclick="quickSelect('TF001')">TF001 – Physics Lab</li>
-
-
-</ul>
-
-<hr>
-
-
+  <button class="logout" onclick="logout()">Logout</button>
+</div>
 
 <script>
-function searchLocation() {
-  var input = document.getElementById("searchbox").value.toUpperCase();
-  var output = document.getElementById("output");
+const locations = {
+  B1:"Enter Gate 1 → After Admission Office → Near Impact Green Block",
+  B2:"Right side of Gate 1",
+  B3:"After Admission Office → Take right inside Architecture room",
+  B4:"In front of Gate 2 → Opposite Boys Hostel",
+  B5:"After Admission Office → Take right",
+  B6:"Opposite Boys Hostel",
+  B7:"Near Gate 2",
+  B8:"After Canteen",
+  B9:"Opposite Impact Green",
+  B10:"Opposite Visvesvaraya Hall",
+  B11:"Opposite Ramanuja Hall",
+  B12:"Beside Seminar Hall",
+  B13:"Beside Sports Block",
 
-  if (input === "B1") output.innerHTML = "B1 → Enter Gate 1 → After Admission office block → Near Impact Green Block";
-  else if (input === "B2") output.innerHTML = "B2 → Right side of the Gate 1";
-  else if (input === "B3") output.innerHTML = "B3 → After Admission office block → take Right inside the Arhitecture room";
-  else if (input === "B4") output.innerHTML = "B4 → Infront of Gate 2 → opposite to boys hostel";
-  else if (input === "B5") output.innerHTML = "B5 → After Admission office block → take Right";
-  else if (input === "B6") output.innerHTML = "B6 → Opposite to Boys Hostel";
-  else if (input === "B7") output.innerHTML = "B7 → Near Gate 2";
-  else if (input === "B8") output.innerHTML = "B8 → After canten";
-  else if (input === "B9") output.innerHTML = "B9 → Opposite to Impact Green";
-  else if (input === "B10") output.innerHTML = "B10 → Opposite to visvesvaraya Hall  ";
-  else if (input === "B11") output.innerHTML = "B11 → opposite to ramanujan hall";
-  else if (input === "B12") output.innerHTML = "B12 → Biside the Semiar hall";
-  else if (input === "B13") output.innerHTML = "B13 → Beside the Sports Block";
+  GF001:"Ground Floor → First Room on the left",
+  GF002:"Ground Floor → Second Room on the left",
+  GF003:"Ground Floor → Third Room on the left",
+  GF004:"Ground Floor → Fourth Room on the left",
+  GF005:"Ground Floor → Fifth Room on the left",
+  GF006:"Ground Floor → Last Room after IDT Lab",
 
+  FF001:"First Floor → First Room on the right",
+  FF002:"Opposite Principal Office",
+  FF003:"First Floor → First Room on the left",
+  FF004:"First Floor → Right side Last Room",
+  FF005:"First Floor → Near Mechanical Staff Room",
+  FF006:"First Floor → Near Civil Staff Room",
 
-  else if (input === "GF001") output.innerHTML = "Room GF001 → Ground Floor → First Room on the left";
-  else if (input === "GF002") output.innerHTML = "Room GF002 → Ground Floor → Second Room on the left";
-  else if (input === "GF003") output.innerHTML = "Room GF003 →Ground Floor → Thrid Room on the left";
-  else if (input === "GF004") output.innerHTML = "Room GF004 → Ground Floor → Fourth Room on the left";
-  else if (input === "GF005") output.innerHTML = "Room GF005 → Ground Floor → Fifth Room on the left";
-  else if (input === "GF006") output.innerHTML = "Room GF006 → Ground Floor → After IDT lab → Last Room";
-  else if (input === "FF001") output.innerHTML = "Room FF001 → Frist Floor → First Room on the right ";
-  else if (input === "FF002") output.innerHTML = "Room FF002 → Opposite to Principal Office";
-  else if (input === "FF003") output.innerHTML = "Room FF003 → First Floor → First Room on the left ";
-  else if (input === "FF004") output.innerHTML = "Room FF004 → First Floor →Right side Last Room";
-  else if (input === "FF005") output.innerHTML = "Room FF005 → First Floor → Near Mechanical staff Room";
-  else if (input === "FF006") output.innerHTML = "Room FF006 → First Floor → Near Cvil Staff room";
-  else if (input === "SF001") output.innerHTML = "Room SF001 → Second Floor → right side last Room";
-  else if (input === "SF002") output.innerHTML = "Room SF002 → Second Floor → Near Computer Science Staff Room";
-  else if (input === "TF001") output.innerHTML = "Room TF001 → Thrid Floor → First Room";
-  
+  SF001:"Second Floor → Right side Last Room",
+  SF002:"Second Floor → Near Computer Science Staff Room",
 
-  else output.innerHTML = "❌ Block or Room not found";
+  TF001:"Third Floor → First Room"
+};
+
+function login(){
+  if(username.value==="admin" && password.value==="1234"){
+    loginPage.classList.add("hidden");
+    mainPage.classList.remove("hidden");
+    document.body.classList.add("main-bg");
+  }else{
+    loginMsg.innerHTML="❌ Invalid Login";
+  }
 }
 
-function quickSelect(value) {
-  document.getElementById("searchbox").value = value;
+function logout(){
+  mainPage.classList.add("hidden");
+  loginPage.classList.remove("hidden");
+  document.body.classList.remove("main-bg");
+}
+
+function searchLocation(){
+  let input=searchbox.value.toUpperCase();
+  if(locations[input]){
+    output.innerHTML="✅ "+locations[input];
+  }else{
+    output.innerHTML="❌ Block or Room not found";
+  }
+}
+
+function quickSelect(val){
+  searchbox.value=val;
   searchLocation();
 }
 
-
+searchbox.addEventListener("keypress",function(e){
+  if(e.key==="Enter") searchLocation();
+});
 </script>
 
 </body>
-
 </html>
-

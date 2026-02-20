@@ -126,7 +126,6 @@ li:hover{
   background:#cc0000;
 }
 
-/* Rating Stars */
 .stars{
   text-align:center;
   font-size:30px;
@@ -147,6 +146,7 @@ li:hover{
 
 <body>
 
+<!-- LOGIN PAGE -->
 <div class="container" id="loginPage">
   <h2>Campus Navigation Login</h2>
   <input type="text" id="username" placeholder="Enter Username">
@@ -155,6 +155,7 @@ li:hover{
   <p id="loginMsg" style="margin-top:10px; color:red;"></p>
 </div>
 
+<!-- MAIN PAGE -->
 <div class="container hidden" id="mainPage">
   <h2>Campus Navigation System</h2>
 
@@ -188,11 +189,21 @@ li:hover{
     <li onclick="quickSelect('GF004')">GF004 – Robotics Class Room</li>
     <li onclick="quickSelect('GF005')">GF005 – IDT Lab</li>
     <li onclick="quickSelect('GF006')">GF006 – Seminar Hall</li>
+    <li onclick="quickSelect('FF001')">FF001 – Principal Office</li>
+    <li onclick="quickSelect('FF002')">FF002 – Account Department</li>
+    <li onclick="quickSelect('FF003')">FF003 – Civil Staff Room</li>
+    <li onclick="quickSelect('FF004')">FF004 – Mechanical Staff Room</li>
+    <li onclick="quickSelect('FF005')">FF005 – Mechanical Lab</li>
+    <li onclick="quickSelect('FF006')">FF006 – Civil Lab</li>
+    <li onclick="quickSelect('SF001')">SF001 – Computer Science Staff Room</li>
+    <li onclick="quickSelect('SF002')">SF002 – Computer Science Lab</li>
+    <li onclick="quickSelect('TF001')">TF001 – Physics Lab</li>
   </ul>
 
   <button class="logout" onclick="logout()">Logout</button>
 </div>
 
+<!-- THANK YOU PAGE -->
 <div class="container hidden" id="thankYouPage">
   <h2>🙏 Thank You for Using Campus Navigation System</h2>
   <h3>Please Rate Your Experience</h3>
@@ -203,7 +214,7 @@ li:hover{
     <span onclick="rate(4)">★</span>
     <span onclick="rate(5)">★</span>
   </div>
-  <p id="ratingMsg" style="text-align:center; margin-top:10px;"></p>
+  <p id="ratingMsg" style="text-align:center;margin-top:10px;"></p>
   <button onclick="goLogin()">Back to Login</button>
 </div>
 
@@ -212,7 +223,35 @@ const locations = {
   B1:"Enter Gate 1 → After Admission Office → Near Impact Green Block",
   B2:"Right side of Gate 1",
   B3:"After Admission Office → Take right inside Architecture room",
-  B4:"In front of Gate 2 → Opposite Boys Hostel"
+  B4:"In front of Gate 2 → Opposite Boys Hostel",
+  B5:"After Admission Office → Take right",
+  B6:"Opposite Boys Hostel",
+  B7:"Near Gate 2",
+  B8:"After Canteen",
+  B9:"Opposite Impact Green",
+  B10:"Opposite Visvesvaraya Hall",
+  B11:"Opposite Ramanuja Hall",
+  B12:"Beside Seminar Hall",
+  B13:"Beside Sports Block",
+
+  GF001:"Ground Floor → First Room on the left",
+  GF002:"Ground Floor → Second Room on the left",
+  GF003:"Ground Floor → Third Room on the left",
+  GF004:"Ground Floor → Fourth Room on the left",
+  GF005:"Ground Floor → Fifth Room on the left",
+  GF006:"Ground Floor → Last Room after IDT Lab",
+
+  FF001:"First Floor → First Room on the right",
+  FF002:"Opposite Principal Office",
+  FF003:"First Floor → First Room on the left",
+  FF004:"First Floor → Right side Last Room",
+  FF005:"First Floor → Near Mechanical Staff Room",
+  FF006:"First Floor → Near Civil Staff Room",
+
+  SF001:"Second Floor → Right side Last Room",
+  SF002:"Second Floor → Near Computer Science Staff Room",
+
+  TF001:"Third Floor → First Room"
 };
 
 function login(){
@@ -260,7 +299,25 @@ function rate(stars){
       star.classList.remove("active");
     }
   });
-  ratingMsg.innerHTML="⭐ You rated "+stars+" out of 5. Thank you!";
+
+  let total = localStorage.getItem("totalRating");
+  let count = localStorage.getItem("ratingCount");
+
+  total = total ? parseInt(total) : 0;
+  count = count ? parseInt(count) : 0;
+
+  total += stars;
+  count += 1;
+
+  localStorage.setItem("totalRating", total);
+  localStorage.setItem("ratingCount", count);
+
+  let average = (total / count).toFixed(2);
+
+  ratingMsg.innerHTML =
+    "⭐ You rated " + stars +
+    "/5 <br>📊 Average Rating: " + average +
+    " (" + count + " votes)";
 }
 </script>
 
